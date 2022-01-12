@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, Dimensions, TextInput } from 'react-native';
 import {
   useFonts,
   Raleway_100Thin,
@@ -8,10 +8,10 @@ import {
   Raleway_400Regular
 } from "@expo-google-fonts/raleway";
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AppLoading from 'expo-app-loading';
 
-import TaskerInput from './components/TaskerInput';
 
 
 export default function App() {
@@ -20,26 +20,18 @@ export default function App() {
     Raleway_300Light,
     Raleway_400Regular
   });
-  const [tasks, setTasks] = useState(
+  const [tasks, setTasks] = useState(/* 
     [
       { key: 1, task: "ABC", status: false},
       { key: 2, task: "XYZ", status: false},
       { key: 3, task: "LALALL", status: true},
       { key: 4, task: "SomeThing.....", status: false},
-      { key: 5, task: "SomeThing.....", status: false},
-      { key: 6, task: "SomeThing.....", status: false},
-      { key: 7, task: "SomeThing.....", status: false},
-      { key: 9, task: "SomeThing.....", status: false},
-      { key: 10, task: "SomeThing.....", status: false},
-      { key: 11, task: "SomeThing.....", status: false},
-      { key: 12, task: "SomeThing.....", status: false},
-      { key: 13, task: "SomeThing.....", status: false},
-    ]
+      
+    ] */
+    retrieveData || []
   );
 
-  const [temp, setTemp] = useState(
-    { key: 0, task: '', status: false }
-  );
+  const [temp, setTemp] = useState('');
 
   const changeTaskStatus = (itemKey) => {
     setTasks(
@@ -72,6 +64,24 @@ export default function App() {
     </View>
   );
 
+
+  const storeData = async (value) => {
+    try {
+      await AsyncStorage.setItem('@tasker_data', JSON.stringify(value))
+    }
+    catch (e) {
+      throw e;
+    }
+  };
+
+  const retrieveData = async () => {
+    try {
+      const data = await AsyncStorage.getItem('@tasker_data');
+      return (data != null) ? JSON.parse(data) : [];
+    } catch (error) {
+      throw error;
+    }
+  };
   if(!fontsLoaded)
     return <AppLoading />
   else return (
@@ -89,8 +99,10 @@ export default function App() {
           {
             position: 'absolute',
             top: '50%',
-            transform: [{translateY: -50}],
+            left: '50%',
+            transform: [{translateX: -75}, {translateY: -50}],
             color:'#555',
+            textAlign: 'center'
           },
             (tasks.length !== 0)?{opacity: 0}:{opacity: 1}
         ]}>
@@ -99,13 +111,41 @@ export default function App() {
         <View style={styles.tasksContainer}>
           <FlatList
             data={tasks}
+            keyExtractor={(item) => item.key}
             renderItem={displayList}
           ></FlatList>
         </View>
         
-        <TaskerInput />
+        <View style={styles.inputContainer}>
+          
+          <TextInput
+            keyboardType='ascii-capable'
+            placeholder='Enter Todo....'
+            placeholderTextColor='#aaa'
+            defaultValue=''
+            style={styles.textBox}
+            onChangeText={(val) => {
+              console.log(val)
+              setTemp(val)
+            }}
+          />
+          
+          <View style={styles.addBtnContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                if(temp !== '') {
+                  setTasks(tasks.concat({ key: tasks.length+1, task: temp, status: false}));
+                }
+            }}>
+              <Icon style={styles.icons} name="add" size={35} color="#000" />
+            </TouchableOpacity>
+          </View>
+        
+        </View>
       
       </View>
+
+      
     </View>
   );
 }
@@ -184,5 +224,48 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'Raleway_300Light'
     
+  },
+  inputContainer: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+
+
+    backgroundColor: '#000'
+  },
+
+  textBox: {
+    flex: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlignVertical: 'center',
+
+    borderRadius: 100,
+    margin: 5,
+    padding: 10,
+
+    fontFamily: 'Raleway_300Light',
+
+    color: 'white',
+    backgroundColor: '#232323'
+  },
+
+  addBtnContainer: {
+    width: 45,
+    height: 45,
+    alignItems: 'center',
+    justifyContent: 'center',
+
+    marginHorizontal: 5,
+
+    borderRadius: 500,
+
+    backgroundColor:'#aaa'
   },
 });
