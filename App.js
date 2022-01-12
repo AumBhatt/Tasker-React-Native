@@ -1,26 +1,39 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
-import TaskerInput from './components/TaskerInput';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
 import {
   useFonts,
-  Raleway_100Thin
+  Raleway_100Thin,
+  Raleway_300Light,
+  Raleway_400Regular
 } from "@expo-google-fonts/raleway";
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AppLoading from 'expo-app-loading';
 
+import TaskerInput from './components/TaskerInput';
+
 
 export default function App() {
   const [fontsLoaded] = useFonts({
-    Raleway_100Thin
+    Raleway_100Thin,
+    Raleway_300Light,
+    Raleway_400Regular
   });
   const [tasks, setTasks] = useState(
     [
       { key: 1, task: "ABC", status: false},
       { key: 2, task: "XYZ", status: false},
       { key: 3, task: "LALALL", status: true},
-      // { key: 4, task: "SomeThing.....", status: false},
+      { key: 4, task: "SomeThing.....", status: false},
+      { key: 5, task: "SomeThing.....", status: false},
+      { key: 6, task: "SomeThing.....", status: false},
+      { key: 7, task: "SomeThing.....", status: false},
+      { key: 9, task: "SomeThing.....", status: false},
+      { key: 10, task: "SomeThing.....", status: false},
+      { key: 11, task: "SomeThing.....", status: false},
+      { key: 12, task: "SomeThing.....", status: false},
+      { key: 13, task: "SomeThing.....", status: false},
     ]
   );
 
@@ -37,8 +50,14 @@ export default function App() {
     )
   };
 
+  const removeTask = (itemKey) => {
+      setTasks(
+        tasks.filter((item) => item.key !== itemKey)
+      );
+  };
+
   const displayList = ({ item }) => (
-    <View style={[styles.itemContainer, (item.status)?{backgroundColor: '#10ac84'}:{ backgroundColor: '#333'}]}>
+    <View style={[styles.itemContainer, (item.status)?styles.taskComplete:styles.taskIncomplete]}>
       <TouchableOpacity onPress={() => changeTaskStatus(item.key)}>
         <Icon
           style={styles.icons}
@@ -47,7 +66,7 @@ export default function App() {
           color="#fff" />
       </TouchableOpacity>
       <Text style={styles.listItem}>{item.task}</Text>
-      <TouchableOpacity onPress={() => changeTaskStatus(item.key)}>
+      <TouchableOpacity onPress={() => removeTask(item.key)}>
         <Icon style={styles.icons} name="close" size={30} color="#fff" />
       </TouchableOpacity>
     </View>
@@ -57,7 +76,9 @@ export default function App() {
     return <AppLoading />
   else return (
     <View style={styles.container}>
-      <StatusBar backgroundColor='black' translucent={false} />
+
+      <StatusBar backgroundColor='black' style='light' translucent={false} />
+
       <View style={styles.headerContainer}>
         <Text style={styles.headerText}>Tasker</Text>
       </View>
@@ -114,26 +135,42 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    alignItems: 'center',
     width: '100%',
     marginTop: 10,
+
+
   },
+
   icons: {
     marginHorizontal: 3
   },
-  itemContainer:{
-    width: '95%',
+  taskComplete: {
+    backgroundColor: '#10ac84'
+  },
+  taskIncomplete: {
+      backgroundColor: '#131313'
+  },
+  tasksContainer: {
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+
+
+  },
+  itemContainer:{
+    flex: 1,
+    zIndex: 10,
+    width: (Dimensions.get('window').width)*0.95,
+    maxWidth: 470,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
 
-    margin: 10,
+    marginVertical: 10,
     padding: 15,
 
     borderRadius: 5,
 
-    textAlign: 'center',
   },
   listItem: {
     width: '70%',
@@ -145,6 +182,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
 
     color: 'white',
+    fontFamily: 'Raleway_300Light'
     
   },
 });

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, FlatList, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TextInput, TouchableOpacity, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default function TaskerInput() {
@@ -22,7 +22,7 @@ export default function TaskerInput() {
               onPress={() => {
               setTasks(tasks.concat(temp));
             }}>
-              <Icon style={styles.icons} name="add" size={35} color="#fff" />
+              <Icon style={styles.icons} name="add" size={35} color="#000" />
             </TouchableOpacity>
           </View>
         
@@ -36,12 +36,15 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    flex: 1,
     flexDirection: 'row',
-
     alignItems: 'center',
     justifyContent: 'center',
 
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+
+
+    backgroundColor: '#000'
   },
 
   textBox: {
@@ -54,9 +57,10 @@ const styles = StyleSheet.create({
     margin: 5,
     padding: 10,
 
+    fontFamily: 'Raleway_300Light',
 
     color: 'white',
-    backgroundColor: '#333'
+    backgroundColor: '#232323'
   },
 
   addBtnContainer: {
@@ -69,6 +73,6 @@ const styles = StyleSheet.create({
 
     borderRadius: 500,
 
-    backgroundColor:'#444'
+    backgroundColor:'#aaa'
   },
 });
