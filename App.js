@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Dimensions, TextInput } from 'react-native';
 import {
@@ -15,6 +15,7 @@ import AppLoading from 'expo-app-loading';
 
 
 export default function App() {
+
   const [fontsLoaded] = useFonts({
     Raleway_100Thin,
     Raleway_300Light,
@@ -27,11 +28,16 @@ export default function App() {
       { key: 3, task: "LALALL", status: true},
       { key: 4, task: "SomeThing.....", status: false},
       
-    ] */
-    retrieveData || []
+    ] */[]
   );
 
   const [temp, setTemp] = useState('');
+
+
+/*   useEffect(() => {
+    storeData(tasks);
+    tasks = retrieveData();
+  }, [tasks]); */
 
   const changeTaskStatus = (itemKey) => {
     setTasks(
@@ -125,7 +131,6 @@ export default function App() {
             defaultValue=''
             style={styles.textBox}
             onChangeText={(val) => {
-              console.log(val)
               setTemp(val)
             }}
           />
