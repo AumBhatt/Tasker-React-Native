@@ -105,18 +105,7 @@ export default function App() {
       </View>
 
       <View style={styles.body}>
-      <Text
-        style={[
-          {
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: [{translateX: -75}, {translateY: -50}],
-            color:'#555',
-            textAlign: 'center'
-          },
-            (tasks.length !== 0)?{opacity: 0}:{opacity: 1}
-        ]}>
+      <Text>
           Hooray!! No tasks todo.
       </Text>
         <View style={styles.tasksContainer}>

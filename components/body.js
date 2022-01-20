@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, FlatList, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, FlatList, Text, TouchableOpacity, Dimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
@@ -13,11 +13,11 @@ const storeData = async (data) => {
 
 export default function body(props) {
     const changeTaskStatus = (itemKey) => {
-        props.setList(
-            props.list.map((item) => (
-                item = { key: item.key, task: item.task, status: (item.key === itemKey) ? !item.status : item.status }
-            ))
-        );
+        var newTasks = props.list.map((item) => (
+                            item = { key: item.key, task: item.task, status: (item.key === itemKey) ? !item.status : item.status }
+                        ));
+        
+        storeData(newTasks).then(props.setList(newTasks));
     };
 
     const removeTask = (itemKey) => {
@@ -28,13 +28,13 @@ export default function body(props) {
 
     const displayTasks = ({ item }) => (
         <TouchableOpacity
-            style={styles.taskItem}
+            style={[styles.taskItem, (item.status) ? styles.taskComplete : styles.taskIncomplete ]}
             onPress={() => changeTaskStatus(item.key)}
         >
             <MaterialIcon
                 name={(item.status) ? 'check-box' : 'check-box-outline-blank'}
                 color={'white'}
-                size="150%"
+                size={22}
             />
             <Text style={styles.taskText}>{item.task}</Text>
             <TouchableOpacity
@@ -43,7 +43,7 @@ export default function body(props) {
                 <MaterialIcon
                     name='close'
                     color={'white'}
-                    size="150%"
+                    size={22}
                 />
             </TouchableOpacity>
         </TouchableOpacity>
@@ -51,6 +51,7 @@ export default function body(props) {
     return (
         <View style={styles.bodyContainer}>
             <FlatList
+                numColumns={(Dimensions.get('window').width >= 450) ? 2 : 0}
                 data={props.list}
                 keyExtractor={(item) => item.key}
                 renderItem={displayTasks}
@@ -61,8 +62,9 @@ export default function body(props) {
 
 const styles = StyleSheet.create({
     bodyContainer: {
-        flex: 9,
-        backgroundColor: 'green'
+        flex: 1,
+        marginBottom: 55,
+
     },
     taskItem: {
         flex: 1,
@@ -71,18 +73,27 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
 
         margin: 10,
-        padding: 2,
-        paddingVertical: 3,
+        marginHorizontal: 15,
+        padding: 10,
 
-        backgroundColor: 'blue'
+        borderRadius: 10, 
+
     },
     taskText: {
-        width: '100%',
+        width: '80%',
+        height: '100%',
 
-        margin: 5,
+        padding: 5,
 
-        fontSize: 'larger',
+        fontSize: 22,
+        fontFamily: 'Raleway_300Light',
         color: 'white',
-        backgroundColor: 'red'
+    },
+
+    taskComplete: {
+        backgroundColor: '#10ac84'
+    },
+    taskIncomplete: {
+        backgroundColor: '#131313'
     },
 });

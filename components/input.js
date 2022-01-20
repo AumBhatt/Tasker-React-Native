@@ -32,7 +32,7 @@ export default function input(props) {
             >
                 <MaterialIcons
                     name='add'
-                    size={'175%'}
+                    size={25}
                     color={'white'}
                     style={styles.addButton}/>
             </TouchableOpacity>
@@ -42,15 +42,20 @@ export default function input(props) {
 
 const styles = StyleSheet.create({
     inputContainer: {
-        flex: 0.7,
+        zIndex: 999,
+        width: '100%',
+        bottom: 0,
+        position: 'absolute',
         flexDirection: 'row',
-        backgroundColor: 'yellow'
+        alignItems: 'center',
+        justifyContent: 'space-between',
     },
     inputField: {
         flex: 9,
+        height: '70%',
 
         margin: 3,
-        paddingHorizontal: 10,
+        padding: 10,
 
         borderRadius: 50,
 
@@ -58,18 +63,16 @@ const styles = StyleSheet.create({
         backgroundColor: '#2e2e2e'
     },
     addButtonContainer: {
-        flex: 1,
+        width: 40,
+        height: 40, 
         alignItems: 'center',
         justifyContent: 'center',
 
-        marginHorizontal: 3,
+        margin: 3,
 
-    },
-    addButton: {
-        padding: 2,
-        
-        borderRadius: '100%',
+        borderRadius: 500,
 
         backgroundColor: '#3e3e3e',
+
     },
 });

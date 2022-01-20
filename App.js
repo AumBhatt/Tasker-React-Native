@@ -3,6 +3,12 @@ import { StyleSheet, View, Text, TextInput, Button, TouchableOpacity } from 'rea
 import { StatusBar } from 'expo-status-bar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
+import {
+    useFonts,
+    Raleway_100Thin,
+    Raleway_300Light,
+    Raleway_400Regular
+  } from "@expo-google-fonts/raleway";
 
 import Banner from './components/banner';
 import Body from './components/body';
@@ -10,6 +16,11 @@ import Input from './components/input';
 
 export default function App() {
     const [ready, setReady] = useState(false);
+    const [fontsLoaded] = useFonts({
+        Raleway_100Thin,
+        Raleway_300Light,
+        Raleway_400Regular
+    });
     const [tasks, setTasks] = useState(
 /*         [
             { key: 1, task: "ABC", status: false},
@@ -39,7 +50,7 @@ export default function App() {
         setTasks(newState);
     };
 
-    if(!ready) {
+    if(!ready || !fontsLoaded) {
         return (
             <AppLoading
                 startAsync={getData}
@@ -50,10 +61,10 @@ export default function App() {
     }
     else return(
         <View style={styles.mainContainer}>
-            <StatusBar style="white" backgroundColor='black' />
-            <Banner />
-            <Body list={tasks} setList={handleSetTask}/>
-            <Input list={tasks} setList={handleSetTask}/>
+            <StatusBar style='light' backgroundColor='black' translucent={false}/>
+            <Banner list={tasks} setList={handleSetTask} />
+            <Body list={tasks} setList={handleSetTask} />
+            <Input list={tasks} setList={handleSetTask} />
         </View>
     );
 };
