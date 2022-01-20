@@ -21,9 +21,8 @@ export default function body(props) {
     };
 
     const removeTask = (itemKey) => {
-        props.setList(
-            props.list.filter((item) => item.key !== itemKey)
-        );
+        var newTasks = props.list.filter((item) => item.key !== itemKey);
+        storeData(newTasks).then(props.setList(newTasks));
     };
 
     const displayTasks = ({ item }) => (

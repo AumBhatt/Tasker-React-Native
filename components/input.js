@@ -16,13 +16,14 @@ export default function input(props) {
 
     const addNewTask = () => {
         var newTasks = [...props.list, { key: props.list.length + 1, task: inputVal, status: false }];
-        storeData(newTasks).then(props.setList(newTasks));
+        storeData(newTasks).then(props.setList(newTasks)).then(setInputVal(''));
     };
 
     return(
         <View style={styles.inputContainer}>
             <TextInput
                 onChangeText={(val) => setInputVal(val)}
+                value={inputVal}
                 placeholder='Enter new task'
                 placeholderTextColor='#7e7e7e'
                 style={styles.inputField} />
