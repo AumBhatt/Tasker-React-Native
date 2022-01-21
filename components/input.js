@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Dimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
@@ -15,8 +15,10 @@ export default function input(props) {
     const [inputVal, setInputVal] = useState('');
 
     const addNewTask = () => {
-        var newTasks = [...props.list, { key: props.list.length + 1, task: inputVal, status: false }];
-        storeData(newTasks).then(props.setList(newTasks)).then(setInputVal(''));
+        if(inputVal !== '') {
+            var newTasks = [...props.list, { key: props.list.length + 1, task: inputVal, status: false }];
+            storeData(newTasks).then(props.setList(newTasks)).then(setInputVal(''));
+        }
     };
 
     return(
@@ -45,15 +47,14 @@ const styles = StyleSheet.create({
     inputContainer: {
         zIndex: 999,
         width: '100%',
-        bottom: 0,
         position: 'absolute',
+        bottom: 0,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
     },
     inputField: {
         flex: 9,
-        height: '70%',
 
         margin: 3,
         padding: 10,

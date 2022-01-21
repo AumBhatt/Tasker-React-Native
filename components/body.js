@@ -49,6 +49,11 @@ export default function body(props) {
     );
     return (
         <View style={styles.bodyContainer}>
+            <Text style={
+                [
+                    styles.noTasksMessage, 
+                    {opacity: ((props.list.length === 0) ? 1 : 0)}
+                ]}>Hooray!!! No pending tasks....</Text>
             <FlatList
                 numColumns={(Dimensions.get('window').width >= 450) ? 2 : 0}
                 data={props.list}
@@ -61,8 +66,8 @@ export default function body(props) {
 
 const styles = StyleSheet.create({
     bodyContainer: {
-        flex: 1,
-        marginBottom: 55,
+        flex: 9,
+        maxHeight: (Dimensions.get('window').height)*0.85,
 
     },
     taskItem: {
@@ -94,5 +99,16 @@ const styles = StyleSheet.create({
     },
     taskIncomplete: {
         backgroundColor: '#131313'
+    },
+    noTasksMessage: {
+        position: 'absolute',
+        width: '100%',
+        top: '50%',
+
+        textAlign: 'center',
+        textAlignVertical: 'center',
+
+        fontFamily: 'Raleway_400Regular',
+        color: '#3e3e3e',
     },
 });
