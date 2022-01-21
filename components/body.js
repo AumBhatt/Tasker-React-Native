@@ -55,7 +55,6 @@ export default function body(props) {
                     {opacity: ((props.list.length === 0) ? 1 : 0)}
                 ]}>Hooray!!! No pending tasks....</Text>
             <FlatList
-                numColumns={(Dimensions.get('window').width >= 450) ? 2 : 0}
                 data={props.list}
                 keyExtractor={(item) => item.key}
                 renderItem={displayTasks}
@@ -67,6 +66,7 @@ export default function body(props) {
 const styles = StyleSheet.create({
     bodyContainer: {
         flex: 9,
+        justifyContent: 'center',
         maxHeight: (Dimensions.get('window').height)*0.85,
 
     },
